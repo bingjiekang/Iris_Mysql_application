@@ -33,7 +33,7 @@ func Register(app *iris.Application) {
 	app.HandleDir("/static", "./static")
 	app.HandleDir("/assets", "./static/assets")
 
-	// 首页处理
+	// 登陆主页处理
 	index := app.Party("/")
 	{
 		index.Any("/", Index.Index)
@@ -44,6 +44,7 @@ func Register(app *iris.Application) {
 		index.Post("/regist", Regist.Regist)       // 提交注册信息
 		index.Post("/sendEmail", Regist.SendEmail) // 提交登陆验证码信息
 		index.Get("/index", Index.Index)           // 详情界面信息
+		index.Get("/default", Index.Default)       // 默认页面信息
 
 	}
 

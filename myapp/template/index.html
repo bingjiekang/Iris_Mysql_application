@@ -22,17 +22,24 @@
             <img src="/static/assets/images/logo.png"/>
             <cite>&nbsp;&nbsp;Iris+Layui 旗舰版&emsp;</cite>
         </div>
-        <ul class="layui-nav layui-layout-left">
+        <ul class="layui-nav layui-layout-left">57
             <li class="layui-nav-item" lay-unselect>
                 <a ew-event="flexible" title="侧边伸缩"><i class="layui-icon layui-icon-shrink-right"></i></a>
             </li>
             <li class="layui-nav-item" lay-unselect>
                 <a ew-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a>
             </li>
-            {{range $key, $item := .menuList}}
+            <!-- {{range $key, $item := .menuList}}
             <li class="layui-nav-item layui-hide-xs {{if eq $key 0}}layui-this{{end}}" lay-unselect><a
                     nav-bind="xt{{$key}}">{{$item.Name}}</a></li>
-            {{end}}
+            {{end}} -->
+            <li class="layui-nav-item layui-hide-xs layui-this" lay-unselect><a
+                nav-bind="xt0">系统管理</a></li>
+            <li class="layui-nav-item layui-hide-xs " lay-unselect><a
+                nav-bind="xt1">会员中心</a></li>
+            <li class="layui-nav-item layui-hide-xs " lay-unselect><a
+                nav-bind="xt2">统计报表</a></li>
+
             <!-- 小屏幕下变为下拉形式 -->
             <li class="layui-nav-item layui-hide-sm layui-show-xs-inline-block" lay-unselect>
                 <a>更多</a>
@@ -78,7 +85,7 @@
     </div>
 
     <!-- 侧边栏 -->
-    <div class="layui-side">
+    <!-- <div class="layui-side">
         <div class="layui-side-scroll">
             {{range $key, $val := .menuList}}
             <ul class="layui-nav layui-nav-tree {{if gt $key 0}}layui-hide{{end}}" nav-id="xt{{$key}}" lay-filter="admin-side-nav" lay-shrink="_all" style="margin: 15px 0;">
@@ -108,7 +115,74 @@
             </ul>
             {{end}}
         </div>
+    </div> -->
+    <!-- 侧边栏简写 -->
+
+
+    <!-- 侧边栏 -->
+    <div class="layui-side">
+        <div class="layui-side-scroll">
+            <!-- 系统管理 -->
+            <ul class="layui-nav layui-nav-tree" nav-id="xt0" lay-filter="admin-side-nav" lay-shrink="_all" style="margin: 15px 0;">
+                <li  class="layui-nav-item">
+                    <a lay-href="#"><i class="layui-icon"></i>&emsp;<cite>权限管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="/user/index">用户管理</a></dd>
+                        <dd><a lay-href="/role/index">角色管理</a></dd>
+                        <dd><a lay-href="/level/index">职级管理</a></dd>
+                        <dd><a lay-href="/position/index">岗位管理</a></dd>
+                        <dd><a lay-href="/dept/index">部门管理</a></dd>
+                    </dl>
+                </li>
+
+                <li  class="layui-nav-item">
+                    <a lay-href="#"><i class="layui-icon"></i>&emsp;<cite>数据管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="/city/index">行政区域</a></dd>
+                    </dl>
+                </li>
+
+
+                <li  class="layui-nav-item">
+                    <a lay-href="#"><i class="layui-icon"></i>&emsp;<cite>系统工具</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="/time/index">时间记录器</a></dd>
+                    </dl>
+                </li>
+
+                <li  class="layui-nav-item">
+                    <a target="_blank" href="https://github.com/zhuoyue2/Iris_Mysql_application"><i class="layui-icon"></i>&emsp;<cite>Github项目</cite></a>
+                </li>
+
+
+                <li  class="layui-nav-item">
+                    <a target="_blank" href="https://kangbingjie.com"><i class="layui-icon"></i>&emsp;<cite>Blok</cite></a>
+                </li>
+            </ul>
+
+            <!-- 会员中心 -->
+            <ul class="layui-nav layui-nav-tree layui-hide" nav-id="xt1" lay-filter="admin-side-nav" lay-shrink="_all" style="margin: 15px 0;">
+                <li  class="layui-nav-item">
+                    <a lay-href="#"><i class="layui-icon"></i>&emsp;<cite>会员管理</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="/memberlevel/index">会员等级</a></dd>
+                        <dd><a lay-href="/member/index">会员管理</a></dd>
+                    </dl>
+                </li>
+            </ul>
+
+            <!-- 统计报表 -->
+            <ul class="layui-nav layui-nav-tree layui-hide" nav-id="xt2" lay-filter="admin-side-nav" lay-shrink="_all" style="margin: 15px 0;">
+                <li  class="layui-nav-item">
+                    <a lay-href="#"><i class="layui-icon"></i>&emsp;<cite>数据统计</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="/analysis/index">统计报表</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
     </div>
+
 
     <!-- 主体部分 -->
     <div class="layui-body"></div>
@@ -136,7 +210,7 @@
 
         // 默认加载主页
         index.loadHome({
-            menuPath: '/main',
+            menuPath: '/default',
             menuName: '<i class="layui-icon layui-icon-home"></i>'
         });
 

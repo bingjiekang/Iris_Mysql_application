@@ -14,6 +14,9 @@ func main() {
 	// 路由注册
 	utils.Register(app)
 
+	// 初始化配置
+	// config := iris.WithConfiguration(iris.YAML("./conf/config.yaml"))
+
 	// 监听8080并运行
 	app.Run(iris.Addr(":8080"))
 }

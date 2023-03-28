@@ -33,6 +33,14 @@ func Login(ctx iris.Context) {
 			})
 			return
 		}
+		// 使用xorm
+		// if !model.Select_user(req.UserName) {
+		// 	ctx.JSON(utils.JsonResult{
+		// 		Code: -1,
+		// 		Msg:  "用户名不存在.......",
+		// 	})
+		// 	return
+		// }
 
 		// 校验验证码是否正确
 		verifyRes := base64Captcha.VerifyCaptcha(req.IdKey, req.Captcha)
