@@ -3,7 +3,9 @@ package main
 import (
 	"myapp/utils"
 
+	// "github.com/kataras/iris/v12/sessions"
 	"github.com/kataras/iris/v12"
+	// "github.com/kataras/iris/v12/sessions"
 	_ "github.com/mojocn/base64Captcha"
 )
 
@@ -13,6 +15,12 @@ func main() {
 
 	// 路由注册
 	utils.Register(app)
+
+	// session配置
+	// SessionId := "SESSION"
+	// Sess = sessions.New(sessions.Config{
+	// 	Cookie: SessionId,
+	// })
 
 	// 初始化配置
 	// config := iris.WithConfiguration(iris.YAML("./conf/config.yaml"))

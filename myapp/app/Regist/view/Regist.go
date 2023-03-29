@@ -11,8 +11,6 @@ import (
 	"strconv"
 	"time"
 
-	"database/sql"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/kataras/iris/v12"
 	"github.com/mojocn/base64Captcha"
@@ -43,13 +41,13 @@ func Regist(ctx iris.Context) {
 		}
 		// 用户名是否已存在
 		// 链接数据库
-		Db, err := sql.Open("mysql", "root:12345678@tcp(localhost:3306)/Iris?charset=utf8")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer Db.Close()
-		DB.StartDB(Db)
-		if DB.Select_user(Db, req.Username) {
+		// Db, err := sql.Open("mysql", "root:12345678@tcp(localhost:3306)/Iris?charset=utf8")
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// defer Db.Close()
+		// DB.StartDB(Db)
+		if DB.Select_user(req.Username) {
 			ctx.JSON(utils.JsonResult{
 				Code: -1,
 				Msg:  "用户名已存在,请更改后注册",
@@ -58,7 +56,7 @@ func Regist(ctx iris.Context) {
 		}
 
 		// 密码校验:是否合理
-		verify_password := "[a-zA-Z0-9]{4,11}"
+		verify_password := "^[a-zA-Z0-9]{4,11}$"
 		Pbol, err := regexp.MatchString(verify_password, req.Password)
 		if err != nil {
 			log.Fatal(err)
@@ -104,12 +102,12 @@ func Regist(ctx iris.Context) {
 		})
 
 		// 向数据库存入用户数据
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer Db.Close()
-		DB.StartDB(Db)
-		if !DB.Insert(Db, req.Username, req.Password, req.Email) {
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// defer Db.Close()
+		// DB.StartDB(Db)
+		if !DB.Insert(req.Username, req.Password, req.Email) {
 			ctx.JSON(utils.JsonResult{
 				Code: -1,
 				Msg:  "注册失败,请联系管理员",

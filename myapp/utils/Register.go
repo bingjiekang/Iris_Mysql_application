@@ -2,29 +2,30 @@ package utils
 
 import (
 	Index "myapp/app/Index/view"
-	_ "myapp/app/Login/midware"
+	"myapp/app/Login/middleware"
 	Login "myapp/app/Login/view"
 	Regist "myapp/app/Regist/view"
 
 	"github.com/kataras/iris/v12"
-	_ "github.com/kataras/iris/v12/sessions"
+	"github.com/kataras/iris/v12/sessions"
 	_ "github.com/mojocn/base64Captcha"
 )
 
 func Register(app *iris.Application) {
-	// // 注册SESSION中间件
-	// session := sessions.New(sessions.Config{
-	// 	Cookie: sessions.DefaultCookieName,
-	// })
-	// // SESSION中间件
-	// app.Use(session.Handler())
-	// // 登录验证中间件
-	// app.Use(midware.CheckLogin)
+	// 注册SESSION中间件
+	session := sessions.New(sessions.Config{
+		Cookie: sessions.DefaultCookieName,
+	})
 
-	// tmpl注册html页面
-	tmpl := iris.HTML("./template", ".html")
-	// 重载所有方法
-	tmpl.Reload(true)
+	// SESSION中间件
+	app.Use(session.Handler())
+	// // 登录验证中间件
+	app.Use(middleware.CheckLogin)
+
+	// tmpl注册html页面,并重载所有方法
+	tmpl := iris.HTML("./template", ".html").Reload(true)
+	// //
+	// tmpl.Reload(true)
 
 	// app注册tmpl
 	app.RegisterView(tmpl)
@@ -45,7 +46,10 @@ func Register(app *iris.Application) {
 		index.Post("/sendEmail", Regist.SendEmail) // 提交登陆验证码信息
 		index.Get("/index", Index.Index)           // 详情界面信息
 		index.Get("/default", Index.Default)       // 默认页面信息
-
+		index.Get("/logout", Index.Logout)         // 退出
+		index.Post("/updatePwd", Index.Update_Pwd) // 更新密码
+		index.Get("/userinfo", Index.Userinfo)     // 用户个人信息
+		index.Post("/userinfo", Index.Userinfo)    // 用户个人信息
 	}
 
 }

@@ -1,13 +1,15 @@
 package Login
 
 import (
-	"database/sql"
-	"log"
+	_ "fmt"
 	"myapp/DB"
 	"myapp/app/Login/utils"
 
+	// "myapp/main"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/sessions"
 	"github.com/mojocn/base64Captcha"
 )
 
@@ -20,13 +22,13 @@ func Login(ctx iris.Context) {
 		ctx.ReadForm(&req)
 
 		// 判断用户是否存在
-		Db, err := sql.Open("mysql", "root:12345678@tcp(localhost:3306)/Iris?charset=utf8")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer Db.Close()
-		DB.StartDB(Db)
-		if !DB.Select_user(Db, req.UserName) {
+		// Db, err := sql.Open("mysql", "root:12345678@tcp(localhost:3306)/Iris?charset=utf8")
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
+		// defer Db.Close()
+		// DB.StartDB(Db)
+		if !DB.Select_user(req.UserName) {
 			ctx.JSON(utils.JsonResult{
 				Code: -1,
 				Msg:  "用户名不存在",
@@ -53,7 +55,7 @@ func Login(ctx iris.Context) {
 		}
 
 		// 判断密码是否合理
-		if !DB.Select_user_pwd(Db, req.UserName, req.Password) {
+		if !DB.Select_user_pwd(req.UserName, req.Password) {
 			ctx.JSON(utils.JsonResult{
 				Code: -1,
 				Msg:  "密码不正确",
@@ -66,6 +68,13 @@ func Login(ctx iris.Context) {
 			Code: 0,
 			Msg:  "登陆成功!",
 		})
+		// sess := main.Sess
+		// Session := sess.Start(ctx)
+		sessions.Get(ctx).Set("trickname", req.UserName)
+		sessions.Get(ctx).Set("status", true)
+		// Session.Set("username", req.UserName)
+		// Session.Set("islogin", true)
+		// fmt.Println(sessions)
 		// ctx.View("index.html")
 		return
 	}

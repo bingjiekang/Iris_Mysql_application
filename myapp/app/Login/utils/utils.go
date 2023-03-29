@@ -23,3 +23,9 @@ type JsonResult struct {
 	Data  interface{} `json:"data"`  // 数据对象
 	Count int64       `json:"count"` // 记录总数
 }
+
+// 登录标记
+type Status struct {
+	Trickname string `json:trickname"`
+	Status    bool   `json:status"`
+}
