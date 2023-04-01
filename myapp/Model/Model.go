@@ -4,14 +4,13 @@ import (
 	"fmt"
 
 	"log"
+	"myapp/app/Index/utils"
 
 	_ "github.com/go-sql-driver/mysql"
 	"xorm.io/xorm"
 )
 
 var engine *xorm.Engine
-
-// var User User_information
 
 func init() {
 	var err error
@@ -29,6 +28,7 @@ func init() {
 
 }
 
+// 获取用户密码
 func Select_userpwd(username string, pwd string) bool {
 	var User User_information
 	has, _ := engine.Where("username = ?", username).Get(&User)
@@ -44,6 +44,7 @@ func Select_userpwd(username string, pwd string) bool {
 	}
 }
 
+// 更新密码操作
 func Servise_pwd(username string, pwd string) bool {
 	// has, _ := engine.Where("username = ? and password = ?", username, pwd).Get(&User)
 	// if has == false {
@@ -58,6 +59,83 @@ func Servise_pwd(username string, pwd string) bool {
 	return true
 	// }
 
+}
+
+// 查询用户邮箱
+func Select_Email(username string) string {
+	var User User_information
+	has, _ := engine.Where("username = ?", username).Get(&User)
+	// fmt.Println("查询到的email", User.Email)
+	if has == false {
+		fmt.Println("查询用户邮箱失败")
+		return "nil"
+	} else {
+		return User.Email
+	}
+}
+
+// 加入用户信息
+func Insert_info(data *utils.UserUpadte) bool {
+	affected, err := engine.Exec("insert into Person_information(realname,nickname,gender,mobile,email,address,intro) value(?,?,?,?,?,?,?)", data.Realname, data.Nickname, data.Gender, data.Mobile, data.Email, data.Address, data.Intro)
+	if err != nil {
+		fmt.Println("用户个人信息更新失败")
+		return false
+	}
+	fmt.Println(affected)
+	return true
+}
+
+// 判断用户是否已经更新过个人信息
+func Select_info(username string) bool {
+	has, err := engine.SQL("select * from Person_information where nickname = ?", username).Exist()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return has
+}
+
+// 如果已经存在则直接更新
+func Update_info(nickname string, data *utils.UserUpadte) bool {
+	affected, err := engine.Exec("update Person_information set realname=?,nickname=?,gender=?,mobile=?,email=?,address=?,intro=? where nickname=?", data.Realname, data.Nickname, data.Gender, data.Mobile, data.Email, data.Address, data.Intro, nickname)
+	if err != nil {
+		fmt.Println("用户个人信息更新失败...")
+		return false
+	}
+	fmt.Println(affected)
+	return true
+
+}
+
+// 从Person_information中获取信息
+func Select_Personinfo(nickname string) (info utils.UserUpadte) {
+	var data Person_information
+	has, err := engine.Where("nickname = ?", nickname).Get(&data)
+	if !has {
+		fmt.Println("从Person_information中获取信息失败", err)
+	} else {
+		fmt.Println("准备返回信息")
+
+		info.Realname = data.Realname
+		info.Nickname = data.Nickname
+		info.Gender = data.Gender
+		info.Mobile = data.Mobile
+		info.Email = data.Email
+		info.Address = data.Address
+		info.Intro = data.Intro
+		fmt.Println(info, "返回的信息")
+	}
+	return
+}
+
+// 更新User_information里的用户名字和email
+func Update_userinfo(oldname string, newname string, email string) bool {
+	affected, err := engine.Exec("update User_information set username=?,email=? where username = ?", newname, email, oldname)
+	if err != nil {
+		fmt.Println("昵称用户更新失败")
+		return false
+	}
+	fmt.Println(affected)
+	return true
 }
 
 // func Select_user(username string) bool {

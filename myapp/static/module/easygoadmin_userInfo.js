@@ -58,6 +58,7 @@ layui.use(['form', 'element', 'admin', 'func'], function () {
         formData.append("mobile", data.field.mobile);
         formData.append("email", data.field.email);
         formData.append("address", data.field.address);
+        formData.append("intro", data.field.intro);
         console.log(formData)
         func.ajaxPost("/userInfo", formData);
         return false;

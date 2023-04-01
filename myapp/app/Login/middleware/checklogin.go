@@ -3,7 +3,6 @@ package middleware
 import (
 	// _ "easygoadmin/utils"
 	"fmt"
-	"net/http"
 	"strings"
 
 	"github.com/kataras/iris/v12"
@@ -14,11 +13,13 @@ import (
 func CheckLogin(ctx iris.Context) {
 	// fmt.Println("登录验证中间件")
 	// 放行设置
-	urlItem := []string{"/captcha", "/login", "/regist"}
+	urlItem := []string{"/captcha", "/login", "/regist", "/static", "/assets", "/template"}
 	if !InStringArray(ctx.Path(), urlItem) && !strings.Contains(ctx.Path(), "static") {
 		if !IsLogin(ctx) {
 			// 跳转登录页,方式：301(永久移动),308(永久重定向),307(临时重定向)
-			ctx.Redirect("/login", http.StatusTemporaryRedirect)
+			// ctx.Redirect("/login", http.StatusTemporaryRedirect)
+			ctx.Redirect("/login")
+			fmt.Println(ctx.Path(), "拒绝")
 			return
 		}
 	}
