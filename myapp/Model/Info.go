@@ -1,5 +1,9 @@
 package model
 
+import (
+	"time"
+)
+
 // 登录信息
 type User_information struct {
 	Id       int    `xorm:not null`
@@ -19,4 +23,13 @@ type Person_information struct {
 	Email    string `xorm:"char(100)"`    // 邮箱地址
 	Address  string `xorm:"varchar(200)"` // 详细地址
 	Intro    string `xorm:"varchar(300)"` // 个人简介
+}
+
+type Role_mag struct {
+	Id       int
+	Username string `xorm:"varchar(200)"`
+	Status   bool
+	Sort     int
+	Created  time.Time `xorm:"created"`
+	Updated  time.Time `xorm:"updated"`
 }

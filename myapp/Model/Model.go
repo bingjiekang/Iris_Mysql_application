@@ -19,7 +19,11 @@ func init() {
 		fmt.Println("连接数据库错误")
 		log.Fatal(err)
 	}
-
+	err = engine.Sync(new(Role_mag))
+	if err != nil {
+		fmt.Println("初始化角色管理错误")
+		log.Fatal(err)
+	}
 	// err = engine.Sync(new(User_information))
 	// if err != nil {
 	// 	fmt.Println("创建错误")
@@ -137,6 +141,9 @@ func Update_userinfo(oldname string, newname string, email string) bool {
 	fmt.Println(affected)
 	return true
 }
+
+// // 查询用户角色信息
+// func Select_role()
 
 // func Select_user(username string) bool {
 // 	var User User_information

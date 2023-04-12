@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>时间选择查看器</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" tppabs="/static/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>倒计时</legend>
+    </fieldset>
+        &emsp;请选择要计算的日期：
+    <div class="layui-inline">
+        <input type="text" class="layui-input" id="testend1" value="2070-10-18 00:00:00">
+    </div>
+    <blockquote class="layui-elem-quote" style="margin-top: 10px;">
+        <div id="testend2"></div>
+    </blockquote>
+
+</body>
+
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['util', 'laydate', 'layer'], function(){
+      var util = layui.util
+      ,laydate = layui.laydate
+      ,$ = layui.$
+      ,layer = layui.layer;
+    //倒计时
+    var thisTimer, setCountdown = function(y, M, d, H, m, s){
+        var endTime = new Date(y, M||0, d||1, H||0, m||0, s||0) //结束日期
+        ,serverTime = new Date(); //假设为当前服务器时间，这里采用的是本地时间，实际使用一般是取服务端的
+        
+        clearTimeout(thisTimer);
+        util.countdown(endTime, serverTime, function(date, serverTime, timer){
+        var str = date[0] + '天' + date[1] + '时' +  date[2] + '分' + date[3] + '秒';
+        lay('#testend2').html(str);
+        thisTimer = timer;
+        });
+    };
+    // 默认时间比实际时间少一个月
+    setCountdown(2070,9,18);
+    
+    laydate.render({
+        elem: '#testend1'
+        ,type: 'datetime'
+        ,done: function(value, date){
+        setCountdown(date.year, date.month - 1, date.date, date.hours, date.minutes, date.seconds);
+    }
+    });
+});
+
+</script>
+
+</html>

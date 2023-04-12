@@ -38,13 +38,13 @@ layui.use(['func', 'admin', 'zTree'], function () {
         var cols = [
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', width: 80, title: 'ID', align: 'center', sort: true, fixed: 'left'}
-            , {field: 'name', width: 200, title: '角色名称', align: 'center'}
+            , {field: 'username', width: 200, title: '角色名称', align: 'center'}
             , {field: 'status', width: 100, title: '状态', align: 'center', templet: function (d) {
                 return  '<input type="checkbox" name="status" value="' + d.id + '" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" '+(d.status==1 ? 'checked' : '')+'>';
             }}
             , {field: 'sort', width: 100, title: '排序', align: 'center'}
-            , {field: 'create_time', width: 180, title: '添加时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.create_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-            , {field: 'update_time', width: 180, title: '更新时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+            , {field: 'created', width: 180, title: '添加时间', align: 'center', sort: true}
+            , {field: 'created', width: 180, title: '更新时间', align: 'center', sort: true}
             , {fixed: 'right', width: 250, title: '功能操作', align: 'center', toolbar: '#toolBar'}
         ];
 

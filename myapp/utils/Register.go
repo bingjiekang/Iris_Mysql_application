@@ -1,10 +1,13 @@
 package utils
 
 import (
+	Analysis "myapp/app/Analysis/view"
 	Index "myapp/app/Index/view"
 	_ "myapp/app/Login/middleware"
 	Login "myapp/app/Login/view"
 	Regist "myapp/app/Regist/view"
+	Role "myapp/app/Role/view"
+	Time "myapp/app/Time/view"
 
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
@@ -56,6 +59,27 @@ func Register(app *iris.Application) {
 		index.Post("/updatePwd", Index.Update_Pwd) // 更新密码
 		index.Get("/userInfo", Index.Userinfo)     // 用户个人信息
 		index.Post("/userInfo", Index.Userinfo)    // 用户个人信息
+	}
+
+	// 角色管理界面
+	role := app.Party("role")
+	{
+		role.Get("/index", Role.Index) // 角色界面
+		role.Post("/index", Role.Index)
+		role.Post("/list", Role.List) // 角色信息界面
+	}
+
+	// 实践管理界面
+	time := app.Party("time")
+	{
+		time.Get("/index", Time.Time)          // 时间管理界面
+		time.Get("/countdown", Time.Countdown) // 时间倒计时
+	}
+
+	// 数据分析界面
+	analysis := app.Party("analysis")
+	{
+		analysis.Any("/index", Analysis.Analysis) // 数据分析管理界面
 	}
 
 }
