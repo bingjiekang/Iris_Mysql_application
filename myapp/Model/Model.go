@@ -2,9 +2,11 @@ package model
 
 import (
 	"fmt"
+	"time"
 
 	"log"
 	"myapp/app/Index/utils"
+	role_utils "myapp/app/Role/utils"
 
 	_ "github.com/go-sql-driver/mysql"
 	"xorm.io/xorm"
@@ -142,21 +144,65 @@ func Update_userinfo(oldname string, newname string, email string) bool {
 	return true
 }
 
-// // 查询用户角色信息
-// func Select_role()
+// 查询用户角色信息
+func Select_role() (role_mag []Role_mag) {
+	err := engine.Find(&role_mag)
+	if err != nil {
+		fmt.Print("查询role message失败!")
+	}
+	return
+}
 
-// func Select_user(username string) bool {
-// 	var User User_information
-// 	// has,err := engine.Exist(new())
+// 查询角色是否已存在
+func Select_role_exit(username string) bool {
+	has, err := engine.SQL("select * from role_mag where username  = ?", username).Exist()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return has
 
-// 	// 查询用户是否存在
-// 	// var name string
-// 	// has, err := engine.Table(&User).Where("username = ?",).
-// 	// has, err := engine.SQL("select * from User_information where username = ?", username).Exist()
-// 	has, err := engine.Where("username = ?", username).Get(&User)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Println(User)
-// 	return has
-// }
+}
+
+// 根据角色id查询角色信息
+func Select_id(id int) Role_mag {
+	var role_mag Role_mag
+	_, err := engine.Where("id = ?", id).Get(&role_mag)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return role_mag
+
+}
+
+// 向role_mag数据库加入信息
+func Insert_role_mag(data *role_utils.RoleAddReq) bool {
+	affected, err := engine.Exec("insert into role_mag(username,status,sort,created,updated) value(?,?,?,?,?)", data.Name, data.Status, data.Sort, time.Now().Format("2006-01-02 15:04:05"), time.Now().Format("2006-01-02 15:04:05"))
+	if err != nil {
+		fmt.Println("角色信息添加失败")
+		return false
+	}
+	fmt.Println(affected)
+	return true
+}
+
+// 更新role_mag信息
+func Update_role_mag(data *role_utils.RoleAddReq) bool {
+	affected, err := engine.Exec("update role_mag set username=?,status=?,sort=?,updated=? where id = ?", data.Name, data.Status, data.Sort, time.Now().Format("2006-01-02 15:04:05"), data.Id)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(affected)
+	return true
+
+}
+
+// 删除role_mag指定id的用户信息
+func Delete_role_mag(id int) bool {
+	affected, err := engine.Table("role_mag").Where("id = ?", id).Delete()
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	fmt.Println(affected)
+	return true
+}

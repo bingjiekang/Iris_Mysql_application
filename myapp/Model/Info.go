@@ -26,7 +26,7 @@ type Person_information struct {
 }
 
 type Role_mag struct {
-	Id       int
+	Id       int    `xorm:"pk autoincr"`
 	Username string `xorm:"varchar(200)"`
 	Status   bool
 	Sort     int

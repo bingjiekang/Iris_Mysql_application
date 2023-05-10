@@ -2,6 +2,7 @@ package utils
 
 import (
 	Analysis "myapp/app/Analysis/view"
+	City "myapp/app/City/view"
 	Index "myapp/app/Index/view"
 	_ "myapp/app/Login/middleware"
 	Login "myapp/app/Login/view"
@@ -66,7 +67,11 @@ func Register(app *iris.Application) {
 	{
 		role.Get("/index", Role.Index) // 角色界面
 		role.Post("/index", Role.Index)
-		role.Post("/list", Role.List) // 角色信息界面
+		role.Post("/list", Role.List)                     // 角色信息界面
+		role.Get("/edit/{id:int}", Role.Role_append)      // 显示信息及更新信息界面
+		role.Post("/add", Role.Add)                       // 添加角色
+		role.Post("/update", Role.Update)                 // 更新角色信息
+		role.Post("/delete/{id:string}", Role.Delete_mag) // 删除角色信息
 	}
 
 	// 实践管理界面
@@ -80,6 +85,12 @@ func Register(app *iris.Application) {
 	analysis := app.Party("analysis")
 	{
 		analysis.Any("/index", Analysis.Analysis) // 数据分析管理界面
+	}
+
+	// 城市地区
+	city := app.Party("city")
+	{
+		city.Any("/index", City.City) // 地域地区显示
 	}
 
 }
