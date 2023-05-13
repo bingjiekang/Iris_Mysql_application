@@ -38,20 +38,13 @@ layui.use(['func'], function () {
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', width: 80, title: 'ID', align: 'center', sort: true, fixed: 'left'}
             , {field: 'name', width: 200, title: '岗位名称', align: 'center'}
-            , {field: 'status', width: 100, title: '状态', align: 'center', templet(d) {
-                    if (d.status == 1) {
-                        // 在用
-                        return '<span class="layui-btn layui-btn-normal layui-btn-xs">在用</span>';
-                    } else {
-                        // 停用
-                        return '<span class="layui-btn layui-btn-primary layui-btn-xs">停用</span>';
-                    }
-                }
-            }
+            , {field: 'status', width: 100, title: '状态', align: 'center', templet: function (d) {
+                return  '<input type="checkbox" name="status" value="' + d.id + '" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" '+(d.status==1 ? 'checked' : '')+'>';
+            }}
             , {field: 'sort', width: 100, title: '显示顺序', align: 'center'}
-            , {field: 'create_time', width: 180, title: '添加时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.create_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-            , {field: 'update_time', width: 180, title: '更新时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-            , {fixed: 'right', width: 150, title: '功能操作', align: 'center', toolbar: '#toolBar'}
+            , {field: 'create_time', width: 180, title: '添加时间', align: 'center'}
+            , {field: 'update_time', width: 180, title: '更新时间', align: 'center'}
+            , {fixed: 'right', width: 250, title: '功能操作', align: 'center', toolbar: '#toolBar'}
         ];
 
         //【渲染TABLE】

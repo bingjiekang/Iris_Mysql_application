@@ -19,3 +19,10 @@ type RoleAddReq struct {
 	Status int    `form:"status" validate:"int"`
 	Sort   int    `form:"sort" validate:"int"`
 }
+
+// 分页查询条件
+type RolePageReq struct {
+	Name  string `form:"name"`  // 角色名称
+	Page  int    `form:"page"`  // 页码
+	Limit int    `form:"limit"` // 每页数
+}

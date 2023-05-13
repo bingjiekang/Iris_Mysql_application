@@ -25,6 +25,7 @@ type Person_information struct {
 	Intro    string `xorm:"varchar(300)"` // 个人简介
 }
 
+// 角色信息数据库
 type Role_mag struct {
 	Id       int    `xorm:"pk autoincr"`
 	Username string `xorm:"varchar(200)"`
@@ -32,4 +33,53 @@ type Role_mag struct {
 	Sort     int
 	Created  time.Time `xorm:"created"`
 	Updated  time.Time `xorm:"updated"`
+}
+
+// 职级信息数据库
+type Level struct {
+	Id          int    `xorm:"pk autoincr"`
+	Name        string `xorm:"varchar(200)"`
+	Status      bool
+	Sort        int
+	Create_time time.Time `xorm:"created"`
+	Update_time time.Time `xorm:"updated"`
+}
+
+// 岗位信息数据库
+type Positions struct {
+	Id          int    `xorm:"pk autoincr"`
+	Name        string `xorm:"varchar(200)"`
+	Status      bool
+	Sort        int
+	Create_time time.Time `xorm:"created"`
+	Update_time time.Time `xorm:"updated"`
+}
+
+// 会员等级数据库
+type MemberLevel struct {
+	Id          int    `xorm:"pk autoincr"`
+	Name        string `xorm:"varchar(200)"`
+	Sort        int
+	Create_time time.Time `xorm:"created"`
+	Update_time time.Time `xorm:"updated"`
+}
+
+// 用户数据库结构体
+type Users struct {
+	Id           int       `xorm:"pk autoincr"`
+	Realname     string    `xorm:"varchar(200)"` //真实姓名
+	Gender       int       //性别
+	Nickname     string    `xorm:"varchar(200)"` // 昵称
+	Password     string    `xorm:"varchar(200)"`
+	Status       bool      `xorm:"varchar(200)"`
+	LevelName    string    `xorm:"varchar(200)"` //职称名
+	PositionName string    `xorm:"varchar(200)"` //岗位名
+	RoleName     string    `xorm:"varchar(200)"` //角色名
+	Mobile       string    `xorm:"varchar(200)"`
+	Email        string    `xorm:"varchar(200)"`
+	Address      string    `xorm:"varchar(200)"`
+	Sort         int       //序号
+	Note         string    `xorm:"varchar(400)"` //备注
+	Create_time  time.Time `json:"created"`
+	Update_time  time.Time `json:"updated"`
 }

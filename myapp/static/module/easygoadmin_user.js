@@ -40,40 +40,35 @@ layui.use(['func'], function () {
             , {field: 'realname', width: 120, title: '用户姓名', align: 'center'}
             , {field: 'gender', width: 60, title: '性别', align: 'center', templet(d) {
                     var cls = "";
+                    var genders = ""
                     if (d.gender == 1) {
                         // 男
                         cls = "layui-btn-normal";
+                        genders = '男'
                     } else if (d.gender == 2) {
                         // 女
+                        genders = '女'
                         cls = "layui-btn-danger";
                     } else if (d.gender == 3) {
                         // 保密
                         cls = "layui-btn-warm";
+                        genders = '保密'
                     }
-                    return '<span class="layui-btn ' + cls + ' layui-btn-xs">' + d.genderName + '</span>';
+                    return '<span class="layui-btn ' + cls + ' layui-btn-xs">' + genders + '</span>';
                 }
             }
             , {field: 'nickname', width: 100, title: '用户昵称', align: 'center'}
-            , {field: 'avatar', width: 80, title: '头像', align: 'center', templet: function (d) {
-                    if (d.avatar != "") {
-                        return '<a href="' + d.avatar + '" target="_blank"><img src="' + d.avatar + '" height="26" /></a>';
-                    }
-                }
-            }
-            , {field: 'username', width: 100, title: '登录名', align: 'center'}
             , {field: 'status', width: 100, title: '状态', align: 'center', templet: function (d) {
                     return '<input type="checkbox" name="status" value="' + d.id + '" lay-skin="switch" lay-text="正常|禁用" lay-filter="status" ' + (d.status == 1 ? 'checked' : '') + '>';
                 }
             }
-            , {field: 'deptName', width: 150, title: '所属部门', align: 'center'}
             , {field: 'levelName', width: 120, title: '职级名称', align: 'center'}
             , {field: 'positionName', width: 120, title: '岗位名称', align: 'center'}
             , {field: 'mobile', width: 130, title: '手机号码', align: 'center'}
             , {field: 'email', width: 200, title: '邮箱地址', align: 'center'}
-            , {field: 'birthday', width: 120, title: '出生日期', align: 'center'}
             , {field: 'sort', width: 100, title: '排序号', align: 'center'}
-            , {field: 'create_time', width: 180, title: '添加时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.create_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
-            , {field: 'update_time', width: 180, title: '更新时间', align: 'center', templet:"<div>{{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}</div>"}
+            , {field: 'create_time', width: 180, title: '添加时间', align: 'center'}
+            , {field: 'update_time', width: 180, title: '更新时间', align: 'center'}
             , {fixed: 'right', width: 250, title: '功能操作', align: 'center', toolbar: '#toolBar'}
         ];
 

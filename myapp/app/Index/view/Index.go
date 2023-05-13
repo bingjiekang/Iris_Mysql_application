@@ -16,6 +16,15 @@ import (
 	"github.com/kataras/iris/v12/sessions"
 )
 
+// 设置状态栏
+func Setstatus(ctx iris.Context) {
+	ctx.JSON(utils.JsonResult{
+		Code: -1,
+		Msg:  "请在编辑栏里操作!",
+	})
+	return
+}
+
 func Index(ctx iris.Context) {
 	if !middleware.IsLogin(ctx) {
 		ctx.Redirect("/login")

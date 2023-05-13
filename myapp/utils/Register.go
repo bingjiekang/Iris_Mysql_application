@@ -4,6 +4,11 @@ import (
 	Analysis "myapp/app/Analysis/view"
 	City "myapp/app/City/view"
 	Index "myapp/app/Index/view"
+	Level "myapp/app/Level/view"
+	Memberlevel "myapp/app/MemberLevel/view"
+	Position "myapp/app/Position/view"
+	User "myapp/app/User/view"
+
 	_ "myapp/app/Login/middleware"
 	Login "myapp/app/Login/view"
 	Regist "myapp/app/Regist/view"
@@ -72,6 +77,54 @@ func Register(app *iris.Application) {
 		role.Post("/add", Role.Add)                       // 添加角色
 		role.Post("/update", Role.Update)                 // 更新角色信息
 		role.Post("/delete/{id:string}", Role.Delete_mag) // 删除角色信息
+		role.Post("/setStatus", Index.Setstatus)          //状态栏返回信息
+	}
+
+	// 职称管理界面
+	level := app.Party("/level")
+	{
+		level.Get("/index", Level.Index)                    // 职称显示界面
+		level.Post("/list", Level.List)                     // 职称信息界面
+		level.Get("/edit/{id:int}", Level.Level_append)     // 职级显示及更新界面
+		level.Post("/add", Level.Add)                       //添加职级
+		level.Post("/update", Level.Update)                 //更新职称信息
+		level.Post("/delete/{id:string}", Level.Delete_mag) //删除职称信息
+		level.Post("/setStatus", Index.Setstatus)           //状态栏返回信息
+	}
+
+	// 岗位管理界面
+	position := app.Party("/position")
+	{
+		position.Get("/index", Position.Index)                    // 岗位显示界面
+		position.Post("/list", Position.List)                     // 岗位信息界面
+		position.Get("/edit/{id:int}", Position.Position_append)  // 岗位显示及更新界面
+		position.Post("/add", Position.Add)                       //添加岗位
+		position.Post("/update", Position.Update)                 //更新岗位信息
+		position.Post("/delete/{id:string}", Position.Delete_mag) //删除岗位信息
+		position.Post("/setStatus", Index.Setstatus)              //状态栏返回信息
+	}
+
+	// 会员等级管理界面
+	memberlevel := app.Party("/memberlevel")
+	{
+		memberlevel.Get("/index", Memberlevel.Index)                      // 等级显示界面
+		memberlevel.Post("/list", Memberlevel.List)                       // 等级信息界面
+		memberlevel.Get("/edit/{id:int}", Memberlevel.Memberlevel_append) // 等级显示及更新界面
+		memberlevel.Post("/add", Memberlevel.Add)                         //添加等级
+		memberlevel.Post("/update", Memberlevel.Update)                   //更新等级信息
+		memberlevel.Post("/delete/{id:string}", Memberlevel.Delete_mag)   //删除等级信息
+	}
+
+	// 用户管理界面
+	user := app.Party("/user")
+	{
+		user.Get("/index", User.Index)                    // 用户显示界面
+		user.Post("/list", User.List)                     // 显示信息
+		user.Get("/edit/{id:int}", User.User_append)      // 显示及更新
+		user.Post("/add", User.Add)                       //添加用户
+		user.Post("/update", User.Update)                 //更新用户信息
+		user.Post("/delete/{id:string}", User.Delete_mag) //删除用户信息
+		user.Post("/setStatus", Index.Setstatus)          //状态栏返回信息
 	}
 
 	// 实践管理界面

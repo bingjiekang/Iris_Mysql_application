@@ -1,10 +1,10 @@
-package Role
+package Position
 
 import (
 	model "myapp/Model"
 	Index_utils "myapp/app/Index/utils"
 	utils "myapp/app/Login/utils"
-	role_utils "myapp/app/Role/utils"
+	position_utils "myapp/app/Position/utils"
 	"strconv"
 	"strings"
 
@@ -13,29 +13,30 @@ import (
 	"github.com/kataras/iris/v12/sessions"
 )
 
+// 显示职称界面
 func Index(ctx iris.Context) {
-	ctx.View("role/index.html")
+	ctx.View("position/index.html")
 }
 
 // 更新查询显示
-func Role_append(ctx iris.Context) {
+func Position_append(ctx iris.Context) {
 
 	id := ctx.Params().GetIntDefault("id", 0)
 	if id > 0 {
-		var req model.Role_mag
-		// 查询这个id对应的rols_mag的数据信息
-		req = model.Select_id(id)
+		var req model.Positions
+		// 查询这个id对应的position的数据信息
+		req = model.Select_position_id(id)
 		// fmt.Println(req.Id, req.Username, req.Status)
 		ctx.ViewData("info", req)
 	}
 	// fmt.Print("这是需要编辑的id:", id)
-	ctx.View("role/edit.html")
+	ctx.View("position/edit.html")
 }
 
-// 更新角色信息
+// 更新岗位信息
 func Update(ctx iris.Context) {
-	var req role_utils.RoleAddReq
-	// 获取角色信息错误,显示错误信息
+	var req position_utils.PositionAddReq
+	// 获取岗位信息错误,显示错误信息
 	if err := ctx.ReadForm(&req); err != nil {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
@@ -43,20 +44,20 @@ func Update(ctx iris.Context) {
 		})
 		return
 	}
-	// 如果用户名已经存在,且id不同则不能添加
-	if model.Select_role_exit(req.Name) && model.Select_id(req.Id).Username != req.Name {
+	// 如果岗位名已经存在,且id不同则不能添加
+	if model.Select_position_exit(req.Name) && model.Select_position_id(req.Id).Name != req.Name {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
-			Msg:  "角色已经存在,重新添加",
+			Msg:  "岗位已经存在,请重新添加",
 		})
 		return
 	}
 
 	// 全部正常后可以更新信息
-	if !model.Update_role_mag(&req) {
+	if !model.Update_position_mag(&req) {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
-			Msg:  "角色添加失败",
+			Msg:  "岗位添加失败",
 		})
 		return
 	}
@@ -69,11 +70,11 @@ func Update(ctx iris.Context) {
 
 }
 
-// 添加角色信息
+// 添加岗位信息
 func Add(ctx iris.Context) {
 
-	var req role_utils.RoleAddReq
-	// 获取角色信息错误,显示错误信息
+	var req position_utils.PositionAddReq
+	// 获取岗位信息错误,显示错误信息
 	if err := ctx.ReadForm(&req); err != nil {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
@@ -82,20 +83,20 @@ func Add(ctx iris.Context) {
 		return
 	}
 
-	// 如果添加的角色存在,返回已存在错误
-	if model.Select_role_exit(req.Name) {
+	// 如果添加的岗位存在,返回已存在错误
+	if model.Select_position_exit(req.Name) {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
-			Msg:  "角色已经存在,重新添加",
+			Msg:  "岗位已经存在,重新添加",
 		})
 		return
 	}
 
-	// 更新角色数据库
-	if !model.Insert_role_mag(&req) {
+	// 更新岗位数据库
+	if !model.Insert_position_mag(&req) {
 		ctx.JSON(utils.JsonResult{
 			Code: -1,
-			Msg:  "角色添加失败",
+			Msg:  "岗位添加失败",
 		})
 		return
 	}
@@ -109,7 +110,7 @@ func Add(ctx iris.Context) {
 
 }
 
-// 删除指定角色信息
+// 删除指定岗位信息
 func Delete_mag(ctx iris.Context) {
 	var req Index_utils.UserUpadte
 	// 获取用户名
@@ -139,11 +140,11 @@ func Delete_mag(ctx iris.Context) {
 			// 将每个字符串转为数字id
 			tm_id, _ := strconv.ParseInt(v, 10, 64)
 			if tm_id > 0 {
-				// 删除id对应角色的信息
-				if !model.Delete_role_mag(int(tm_id)) {
+				// 删除id对应岗位的信息
+				if !model.Delete_position_mag(int(tm_id)) {
 					ctx.JSON(utils.JsonResult{
 						Code: -1,
-						Msg:  "角色删除失败",
+						Msg:  "岗位删除失败",
 					})
 					return
 				}
@@ -160,10 +161,9 @@ func Delete_mag(ctx iris.Context) {
 
 }
 
-// 显示全部角色信息
+// 显示全部岗位信息
 func List(ctx iris.Context) {
-	// 定义一个页数及信息查询
-	var req role_utils.RolePageReq
+	var req position_utils.PositionPageReq
 	// 定义一个传输给前端data的列表
 	var role_data []interface{}
 	if err := ctx.ReadForm(&req); err != nil {
@@ -174,36 +174,34 @@ func List(ctx iris.Context) {
 		})
 		return
 	}
-
 	if req.Name == "" {
-		// 获取Role_mag数据表的全部数据(是一个列表的加入的多个结构体)
-		var role_mag = model.Select_role()
+		// 获取level数据表的全部数据(是一个列表的加入的多个结构体)
+		var role_mag = model.Select_position()
 		// 遍历这个列表里的结构体,将对应数据加入到 返回给前端的数据data里
 		for _, v := range role_mag {
 			role_data = append(role_data, map[string]interface{}{
-				"id":       v.Id,
-				"username": v.Username,
-				"status":   v.Status,
-				"sort":     v.Sort,
-				"created":  v.Created,
-				"updated":  v.Updated,
+				"id":          v.Id,
+				"name":        v.Name,
+				"status":      v.Status,
+				"sort":        v.Sort,
+				"create_time": v.Create_time,
+				"update_time": v.Update_time,
 			})
 		}
 	} else {
-		// 获取Role_mag数据表的部分数据(是一个列表的加入的多个结构体)
-		var role_mag = model.Select_role_limit(req.Name)
+		// 获取level数据表的部分数据(是一个列表的加入的多个结构体)
+		var role_mag = model.Select_position_limit(req.Name)
 		// 遍历这个列表里的结构体,将对应数据加入到 返回给前端的数据data里
 		for _, v := range role_mag {
 			role_data = append(role_data, map[string]interface{}{
-				"id":       v.Id,
-				"username": v.Username,
-				"status":   v.Status,
-				"sort":     v.Sort,
-				"created":  v.Created,
-				"updated":  v.Updated,
+				"id":          v.Id,
+				"name":        v.Name,
+				"status":      v.Status,
+				"sort":        v.Sort,
+				"create_time": v.Create_time,
+				"update_time": v.Update_time,
 			})
 		}
-
 	}
 
 	if ctx.Method() == "POST" {
