@@ -14,7 +14,7 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
-            <!-- 功能操作区一 -->
+            <!-- 功能操作区一
             <form class="layui-form toolbar">
                 <div class="layui-form-item">
                     <div class="layui-inline">
@@ -33,9 +33,10 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </form> -->
 
-            <table class="layui-hide" id="test"></table>
+                <table class="layui-table" lay-filter="table1" id="test"></table>
+            
         </div>
     </div>
 </div>
@@ -45,27 +46,55 @@
 </body>
 
 <script src="/static/layui/layui.js" charset="utf-8"></script>
+
+
 <script>
-    layui.use('table', function(){
-      var table = layui.table;
-      
+    layui.use(['table'], function(){
+    var table = layui.table;
     table.render({
     elem: '#test'
     ,url: '../../static/city.json'
     ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
     ,cols: [[
-        {field:'name', width:"10%", title: '城市名称', sort: true,align: 'center',fixed: 'left'}
-        ,{field:'area', width:"40%", title: '区县名称',align: 'center'}
-        ,{field:'grade', width:"20%", title: '城市级别',align: 'center'}
-        ,{field:'code', width:"30%", title: '邮政编码',align: 'center'}
+        {field:'name', width:"20%", title: '城市名称', sort: true,align: 'center',fixed: 'left'}
+        ,{field:'city', width:"40%", title: '区县名称',align: 'center',
+        templet:function(res){
+            // alert(res);
+            var lt = []
+            for (tmp of res.city){
+                // return tmp.name
+                // alert(tmp.area[0])
+                // append(lt,tmp.name)
+                // return tmp.area
+                lt.push(tmp.name)
+            }
+            return lt
+            // return lt;
+        }}
+        ,{field:'area', width:"40%", title: '城市级别',align: 'center',templet:function(res){
+            // alert(res);
+            var lt = []
+            var st = []
+            var dit = {}
+            for (tmp of res.city){
+                // return tmp.name
+                // alert(tmp.area[0])
+                // append(lt,tmp.name)
+                // return tmp.area
+                // dit[tmp.name]= tmp.area
+                // if (tmp.name)
+                lt.push(tmp.area)
+                st.push('{'+tmp.name+': '+lt+'}'+'<br>'+'<br>')
+                
+            }
+            return st
+            
+            
+            // return lt;
+        }}
         ]]
     });
-
     });
-
-    
-
-
 </script>
 
 </html>
